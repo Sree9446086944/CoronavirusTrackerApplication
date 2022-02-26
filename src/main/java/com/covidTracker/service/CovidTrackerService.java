@@ -48,7 +48,7 @@ public class CovidTrackerService {
 			locationStat.setState(record.get("Province/State"));
 			locationStat.setCountry(record.get("Country/Region"));
 			locationStat.setLatestTotalCases(Integer.parseInt(record.get(record.size()-1)));  // since no specificcolumn headername , column adds up every day with header as latest date, so fetch last column
-		    System.out.println(locationStat);
+//		    System.out.println(locationStat);
 		    newStats.add(locationStat);
 		}
 		this.allStats = newStats;
