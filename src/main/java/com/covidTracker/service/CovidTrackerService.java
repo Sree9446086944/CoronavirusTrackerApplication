@@ -6,6 +6,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 
@@ -13,6 +15,8 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import com.covidTracker.models.LocationStats;
 
 @Service
 public class CovidTrackerService {
@@ -22,6 +26,7 @@ public class CovidTrackerService {
 	@PostConstruct
 	@Scheduled(cron="* * 1 * * *")  // run every second
 	public void fetchCovidData() throws IOException, InterruptedException {
+		List<LocationStats> newStats = new ArrayList<>(); //creating instance of LocationStats
 		HttpClient client =  HttpClient.newHttpClient();  //creating new client
 		HttpRequest request = HttpRequest.newBuilder()      // to use builder pattern
 		       .uri(URI.create(COVID_DATA_URL)) // convert string url to URI object pass to uri() method, send along with request
@@ -32,8 +37,12 @@ public class CovidTrackerService {
 		StringReader csvBodyReader = new StringReader(httpResponse.body()); // we have reader from string instance
 		Iterable<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(csvBodyReader); //pass reader and parse to csv
 		for (CSVRecord record : records) {
-		    String state = record.get("Province/State");
-		    System.out.println(state);
+			LocationStats locationStat = new LocationStats();
+			locationStat.setState(record.get("Province/State"));
+			locationStat.setCountry(record.get("Country/Region"));
+			locationStat.setLatestTotalCases(Integer.parseInt(record.get(record.size()-1)));  // since no specificcolumn headername , column adds up every day with header as latest date, so fetch last column
+		    System.out.println(locationStat);
+		    newStats.add(locationStat);
 		}
 		     
 		
