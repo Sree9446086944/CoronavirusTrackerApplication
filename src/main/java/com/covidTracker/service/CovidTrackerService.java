@@ -20,7 +20,7 @@ public class CovidTrackerService {
 	private static String COVID_DATA_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
 
 	@PostConstruct
-	@Scheduled(cron="* * * * * *")  // run every second
+	@Scheduled(cron="* * 1 * * *")  // run every second
 	public void fetchCovidData() throws IOException, InterruptedException {
 		HttpClient client =  HttpClient.newHttpClient();  //creating new client
 		HttpRequest request = HttpRequest.newBuilder()      // to use builder pattern
