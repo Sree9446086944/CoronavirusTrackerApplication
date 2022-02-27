@@ -4,6 +4,14 @@ public class LocationStats {
 	private String state;
 	private String country;
 	private int latestTotalCases; // last column in csv with case no of present day
+	private int diffFromPrevDay;
+	
+	public int getDiffFromPrevDay() {
+		return diffFromPrevDay;
+	}
+	public void setDiffFromPrevDay(int diffFromPrevDay) {
+		this.diffFromPrevDay = diffFromPrevDay;
+	}
 	public String getState() {
 		return state;
 	}
