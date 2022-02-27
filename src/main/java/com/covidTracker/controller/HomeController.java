@@ -20,8 +20,11 @@ public class HomeController {
 		List<LocationStats> allStats =  covidTrackerService.getAllStats();
 		//sum of all the cases in globe
 		int totalReportedCases = allStats.stream().mapToInt(stat -> stat.getLatestTotalCases()).sum();
+		//total change from prev day
+		int totalNewCases = allStats.stream().mapToInt(stat->stat.getDiffFromPrevDay()).sum();
 		model.addAttribute("locationStats",allStats);
 		model.addAttribute("totalReportedCases",totalReportedCases);
+		model.addAttribute("totalNewCases",totalNewCases);
 		return "home";
 	}
 }
